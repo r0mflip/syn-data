@@ -15,10 +15,8 @@ def collect_tweets(task, tags):
   '''
   Collect tweets for tag, indefinitely and store in csv files
   '''
-  print('Collecting tweets...')
 
   appKeys = kays.appKeys
-
 
   with fopen(task, newline='\n', encoding='utf-8') as f:
     # save task to log
@@ -31,6 +29,7 @@ def collect_tweets(task, tags):
 
     # collect tweets indefinitely by using all keys
     while True:
+      print(time.ctime(), 'Collecting tweets...')
       # get the key
       key = appKeys[keyIdx]
 
@@ -41,6 +40,7 @@ def collect_tweets(task, tags):
 
       # filter out retweets
       query = tags[tagIdx] + ' -filter:retweets'
+      count = 0
 
       # collect tweets and save
       try:
@@ -50,15 +50,15 @@ def collect_tweets(task, tags):
           # escape text
           row = map(esc, [tweet.text, tweet.id, user.name, user.screen_name, user.location, user.description, user.followers_count, user.friends_count, user.listed_count, user.statuses_count, user.favourites_count, user.verified, user.default_profile_image, user.default_profile, user.protected, user.created_at])
 
-          print(str(row))
-
           writer.writerow(row)
+          count = count+1
       except Exception as e:
         # Stop for 1min and then start using next key
-        print(e)
+        print(time.ctime(), 'Got {} tweets'.format(count))
+        if keyIdx+1 == len(appKeys):
+          tagIdx = (tagIdx+1) % len(tags)
         keyIdx = (keyIdx+1) % len(appKeys)
-        tagIdx = (tagIdx+1) % len(tags)
-        time.sleep(1 * 60)
+        time.sleep(1 * 30)
 
 
 def main():
@@ -70,18 +70,30 @@ def main():
   if len(args) == 0:
     # return
     task = 'all'
+    # tags = [
+    #   '#LEFTIST_ARE_TERRORISTS',
+    #   '#LeftAttacksJNU',
+    #   '#ShutDownJNU'
+    #   '#LeftKillingJNU',
+    #   '#IndiaSupportsCAA',
+    #   '#CAASupport',
+    #   '#TukdeGangSpotted',
+    #   '#JNUattack',
+    #   '#ABVP_TERRORISTS',
+    #   '#JNUTerrorAttack',
+    #   '#IndiaAgainstCAA',
+    #   '#ISupportCAA',
+    #   '#BoycottBollywood',
+    #   '#AmithShahResign',
+    #   '#CAA_NRC'
+    # ]
     tags = [
-      '#LEFTIST_ARE_TERRORISTS',
-      '#LeftAttacksJNU',
-      '#ShutDownJNU'
-      '#LeftKillingJNU',
       '#IndiaSupportsCAA',
       '#CAASupport',
-      '#TukdeGangSpotted',
-      '#JNUattack',
-      '#ABVP_TERRORISTS',
-      '#JNUTerrorAttack',
       '#IndiaAgainstCAA',
+      '#IndiaAgainstCAA_NRC',
+      '#ISupportCAA',
+      '#AmithShahResign',
       '#CAA_NRC'
     ]
   else:

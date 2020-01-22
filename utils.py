@@ -22,7 +22,7 @@ def writelog(task, tags):
   Save log of task run
   '''
   with open('runs.log', 'a+', newline='\n', encoding='utf-8') as f:
-    f.write('{} {} {}'.format(time.ctime(), task, str(tags)))
+    f.write('{} {} {}\n'.format(time.ctime(), task, str(tags)))
 
 
 def fopen(tag, **kwargs):
