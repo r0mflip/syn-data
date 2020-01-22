@@ -19,8 +19,6 @@ def collect_tweets(task, tags):
   appKeys = kays.appKeys
 
   with fopen(task, newline='\n', encoding='utf-8') as f:
-    # save task to log
-    writelog(task, tags)
     keyIdx = 0
     tagIdx = 0
 
@@ -29,6 +27,9 @@ def collect_tweets(task, tags):
 
     # collect tweets indefinitely by using all keys
     while True:
+      # save task to log
+      writelog(task, tags)
+
       print(time.ctime(), 'Collecting tweets...')
       # get the key
       key = appKeys[keyIdx]
@@ -53,12 +54,12 @@ def collect_tweets(task, tags):
           writer.writerow(row)
           count = count+1
       except Exception as e:
-        # Stop for 1min and then start using next key
+        # Wait for 10 mins and then start using next key
         print(time.ctime(), 'Got {} tweets'.format(count))
         if keyIdx+1 == len(appKeys):
           tagIdx = (tagIdx+1) % len(tags)
         keyIdx = (keyIdx+1) % len(appKeys)
-        time.sleep(1 * 30)
+        time.sleep(10 * 60)
 
 
 def main():
@@ -67,9 +68,9 @@ def main():
   task = ''
   tags = ''
 
-  if len(args) == 0:
+  if len(args) < 2:
     # return
-    task = 'all'
+    task = 'verybig'
     # tags = [
     #   '#LEFTIST_ARE_TERRORISTS',
     #   '#LeftAttacksJNU',
@@ -93,12 +94,11 @@ def main():
       '#IndiaAgainstCAA',
       '#IndiaAgainstCAA_NRC',
       '#ISupportCAA',
-      '#AmithShahResign',
       '#CAA_NRC'
     ]
   else:
     task = args[0]
-    tags = [args[1]]
+    tags = args[1:]
 
   collect_tweets(task, tags)
 
