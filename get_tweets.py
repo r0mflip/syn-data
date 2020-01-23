@@ -56,8 +56,8 @@ def collect_tweets(task, tags):
       except Exception as e:
         # Wait for 10 mins and then start using next key
         print(time.ctime(), 'Got {} tweets'.format(count))
-        if keyIdx+1 == len(appKeys):
-          tagIdx = (tagIdx+1) % len(tags)
+        # if keyIdx+1 == len(appKeys):
+        tagIdx = (tagIdx+1) % len(tags)
         keyIdx = (keyIdx+1) % len(appKeys)
         time.sleep(10 * 60)
 
