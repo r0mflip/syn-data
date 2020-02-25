@@ -25,11 +25,11 @@ def collect_tweets(task, tags):
     # writer for csv
     writer = csv.writer(f)
 
+    # save task to log
+    writelog(task, tags)
+
     # collect tweets indefinitely by using all keys
     while True:
-      # save task to log
-      writelog(task, tags)
-
       print(time.ctime(), 'Collecting tweets...')
       # get the key
       key = appKeys[keyIdx]
@@ -88,13 +88,23 @@ def main():
     #   '#AmithShahResign',
     #   '#CAA_NRC'
     # ]
+    # tags = [
+    #   '#IndiaSupportsCAA',
+    #   '#CAASupport',
+    #   '#IndiaAgainstCAA',
+    #   '#IndiaAgainstCAA_NRC',
+    #   '#ISupportCAA',
+    #   '#CAA_NRC'
+    # ]
+
     tags = [
-      '#IndiaSupportsCAA',
-      '#CAASupport',
-      '#IndiaAgainstCAA',
-      '#IndiaAgainstCAA_NRC',
-      '#ISupportCAA',
-      '#CAA_NRC'
+      '#DelhiPolice',
+      '#IslamicTerror',
+      '#DelhiBurning',
+      '#IvankaTrump',
+      'Muslim',
+      '#CAAProtest',
+      'Pro CAA'
     ]
   else:
     task = args[0]
